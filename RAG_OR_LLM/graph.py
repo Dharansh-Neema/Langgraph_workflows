@@ -28,19 +28,42 @@ def router_agent(AgentState)->Literal["LLM","RAG"]:
 
 def llm_call(AgentState):
     """This is LLM which will reply for any other query."""
-    query = AgentState['query']
-    llm = ChatGoogleGenerativeAI(
-                    model="gemini-2.0-flash-001",
-                    api_key=os.getenv('GOOGLE_API_KEY'))
-    output = llm.invoke(query)
-    print(output.content)
-    AgentState['answer'] = output.content
-    return AgentState
+    try:
+        query = AgentState['query']
+        llm = ChatGoogleGenerativeAI(
+                        model="gemini-2.0-flash-001",
+                        api_key=os.getenv('GOOGLE_API_KEY'))
+        output = llm.invoke(query)
+        print(output.content)
+        answer = AgentState['answer']
+        answer.append(output.content)
+        AgentState['answer'] = answer
+        print(AgentState)
+        return AgentState
+    except Exception as e:
+        print("Some unexpected error occurred at LLM CALL",e)
+        raise e
+
+def rag_call(AgentState):
+    """ This is RAG CALL """
+    try:
+        query = AgentState['query']
+        output = generate(question=query)
+        answer = AgentState['answer']
+        answer.append(output)
+        AgentState['answer'] = answer
+        print(AgentState)
+        return AgentState
+    
+    except Exception as e:
+        print("Some unexpected error occurred at RAG CALL",e)
+        raise e
 
 if __name__ == "__main__":
     AgentState = {}
     q = "What will be the GDP of India in 2025."
     q_l = "What is Langchain?"
-    AgentState.update(query=q_l)
-    print(AgentState)
-    llm_call(AgentState)
+    AgentState.update(query=q)
+    AgentState.update(answer=[])
+    # print(AgentState)
+    rag_call(AgentState)

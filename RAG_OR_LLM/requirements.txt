@@ -6,3 +6,5 @@ langchain_core
 langchain-text-splitters
 langgraph
 langchain_huggingface
+langchain
+langchain-google-genai

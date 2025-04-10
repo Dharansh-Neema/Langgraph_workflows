@@ -8,3 +8,4 @@ langgraph
 langchain_huggingface
 langchain
 langchain-google-genai
+IPython

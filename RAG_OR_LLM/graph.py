@@ -28,10 +28,19 @@ def router_agent(AgentState)->Literal["LLM","RAG"]:
 
 def llm_call(AgentState):
     """This is LLM which will reply for any other query."""
+    query = AgentState['query']
+    llm = ChatGoogleGenerativeAI(
+                    model="gemini-2.0-flash-001",
+                    api_key=os.getenv('GOOGLE_API_KEY'))
+    output = llm.invoke(query)
+    print(output.content)
+    AgentState['answer'] = output.content
+    return AgentState
 
 if __name__ == "__main__":
     AgentState = {}
     q = "What will be the GDP of India in 2025."
-    AgentState.update(query=q)
+    q_l = "What is Langchain?"
+    AgentState.update(query=q_l)
     print(AgentState)
-    router_agent(AgentState)
+    llm_call(AgentState)

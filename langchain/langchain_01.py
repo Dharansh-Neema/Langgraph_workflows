@@ -1,4 +1,6 @@
 from langchain.chat_models import init_chat_model
+from langchain.tools import tool
+from datetime import datetime
 from dotenv import load_dotenv
 from typing import List
 load_dotenv()
@@ -20,6 +22,15 @@ def streaming(prompt):
 def batching(prompts: List):
     print(model.batch(prompts))
 
+
+# To create a tool 
+@tool
+def date_time_return():
+    """
+    Return Exact date and time
+    """
+    print(datetime.now())
+    return datetime.now()
 if __name__ == '__main__':
     # print(testing("Hi what's capital of USA"))
     # streaming("Describe about banswara a city in rajasthan in 1000 words ")
@@ -27,4 +38,7 @@ if __name__ == '__main__':
         "What should a Associate software enginner do to get hired as AI enginner in TOP fintech or banks",
         "Give some good projects ideas for AI-Enginner Industry standard types"
     ]
-    batching(prompts)
+    # batching(prompts)
+    # To Bind the models with tools 
+    model_with_date_tool = model.bind_tools([date_time_return])
+    print(model_with_date_tool.invoke('What todays date??'))

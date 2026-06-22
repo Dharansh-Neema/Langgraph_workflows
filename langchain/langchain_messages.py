@@ -1,0 +1,25 @@
+"""
+Messages are the fundamental unit of xontext for models in LangChain.
+They represent the input and output of models, carrying both the content and meatdata which is needed to represen 
+the state of converstion while interacting with LLM.
+
+It has :
+- Role : Identifies the message type (e.g system, user)
+- Content : Represent the actual content of the message (text,audio or docs)
+- Metadata : token usage , message id etc
+
+When model give output it's AIMessage 
+When human give input it's HumanMessage
+
+By default when human is given a message is Human Message with .invoke
+"""
+from langchain.chat_models import init_chat_model
+from langchain.tools import tool
+from datetime import datetime
+from dotenv import load_dotenv
+from typing import List
+load_dotenv()
+
+model = init_chat_model(model='google_genai:gemini-3.1-flash-lite')
+
+

@@ -18,6 +18,7 @@ from langchain.tools import tool
 from datetime import datetime
 from dotenv import load_dotenv
 from typing import List
+from langchain.messages import SystemMessage, HumanMessage, AIMessage
 load_dotenv()
 
 model = init_chat_model(model='google_genai:gemini-3.1-flash-lite')
@@ -37,8 +38,16 @@ def MessagePrompt():
         Tool Message   : Represents the output of tool calls 
     """
 
+    messages = [
+        SystemMessage("You are football experts."),
+        HumanMessage("Write a details of what are rules player follows in Football which make me easy to watch FIFA 2026.")
+    ]
+    print(model.invoke(messages).content)
+    
+
 def main():
-    TextPrompts()
+    # TextPrompts()
+    MessagePrompt()
 
 
 if __name__ == '__main__':
